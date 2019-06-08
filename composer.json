@@ -5,13 +5,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Makedo\\Paginator\\": "src/Paginator"
+      "Makedo\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Test\\Makedo\\Paginator\\": "test/Paginator",
-      "spec\\Makedo\\Paginator\\": "spec/Paginator"
+      "Test\\Makedo\\": "test",
+      "spec\\Makedo\\": "spec"
     }
   },
   "config": {

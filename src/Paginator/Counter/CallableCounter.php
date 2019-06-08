@@ -16,7 +16,6 @@ class CallableCounter implements Counter
 
     public function count(): int
     {
-        return 1;
+        return call_user_func($this->counter);
     }
-
 }
