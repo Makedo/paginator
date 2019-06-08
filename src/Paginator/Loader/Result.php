@@ -12,7 +12,7 @@ use Traversable;
 final class Result implements IteratorAggregate, Countable
 {
     /**
-     * @var Traversable
+     * @var Iterator
      */
     private $iterator;
 
@@ -21,7 +21,7 @@ final class Result implements IteratorAggregate, Countable
      */
     private $count;
 
-    public function __construct(Traversable $items, int $count)
+    public function __construct(Iterator $items, int $count)
     {
         $this->iterator = $items;
         $this->count = $count;
@@ -33,8 +33,8 @@ final class Result implements IteratorAggregate, Countable
             return self::fromArray($items);
         }
 
-        if ($items instanceof Traversable) {
-            return self::fromTraversable($items);
+        if ($items instanceof Iterator) {
+            return self::fromIterator($items);
         }
 
         throw new InvalidArgumentException('Items should be array or Traversable');
@@ -48,13 +48,13 @@ final class Result implements IteratorAggregate, Countable
         );
     }
 
-    public static function fromTraversable(Traversable $items): self
+    public static function fromIterator(Iterator $items): self
     {
         $count = self::countItems($items);
         return new self($items, $count);
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): Iterator
     {
         return $this->iterator;
     }
@@ -64,7 +64,7 @@ final class Result implements IteratorAggregate, Countable
         return $this->count;
     }
 
-    private static function countItems(Traversable $items): int
+    private static function countItems(Iterator $items): int
     {
         if ($items instanceof Countable) {
             $count = $items->count();
@@ -73,9 +73,7 @@ final class Result implements IteratorAggregate, Countable
             foreach ($items as $v) {
                 ++$count;
             }
-            if ($items instanceof Iterator) {
-                $items->rewind();
-            }
+            $items->rewind();
         }
 
         return $count;

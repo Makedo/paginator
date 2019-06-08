@@ -32,7 +32,7 @@ class ResultSpec extends ObjectBehavior
         $this->count()->shouldBe(count($data));
     }
 
-    function it_iterates_over_traversable()
+    function it_iterates_over_iterator()
     {
         $data = [1,2,3,4,5];
         $traversable = new ArrayIterator($data);
