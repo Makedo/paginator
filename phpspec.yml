@@ -1,0 +1,6 @@
+#composer_suite_detection: true
+suites:
+  default:
+    namespace: Makedo\Paginator
+    psr4_prefix: Makedo
+    src_path: "%paths.config%/src"
