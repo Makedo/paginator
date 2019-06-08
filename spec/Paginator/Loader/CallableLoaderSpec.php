@@ -4,6 +4,7 @@ namespace spec\Makedo\Paginator\Loader;
 
 use Makedo\Paginator\Loader\CallableLoader;
 use Makedo\Paginator\Loader\Loader;
+use Makedo\Paginator\Loader\Result;
 use PhpSpec\ObjectBehavior;
 use Test\Makedo\CallableMock;
 
@@ -19,17 +20,30 @@ class CallableLoaderSpec extends ObjectBehavior
         $this->shouldImplement(Loader::class);
     }
 
-    function let(CallableMock $loader)
+    function let()
+    {
+        $this->beConstructedWith(function() {return [];});
+    }
+
+    function it_calls_loader_function_and_creates_result_object(CallableMock $loader)
     {
         $loader->__invoke(self::LIMIT, self::OFFSET)->willReturn(self::DATA);
 
-        $this->beConstructedWith($loader);
+        $result = $this->load(self::LIMIT, self::OFFSET);
+
+        $result->shouldBeAnInstanceOf(Result::class);
+
+        $result->shouldIterateAs(self::DATA);
     }
 
-    function it_calls_loader_function_and_returns_it_value(CallableMock $loader)
+    function it_calls_loader_function_and_returns_result(CallableMock $loader)
     {
-        $this->load(self::LIMIT, self::OFFSET)->shouldBe(self::DATA);
+        $result = Result::fromIterable([]);
 
-        $loader->__invoke(self::LIMIT, self::OFFSET)->shouldHaveBeenCalled();
+        $loader->__invoke(self::LIMIT, self::OFFSET)->willReturn($result);
+
+        $result = $this->load(self::LIMIT, self::OFFSET);
+
+        $result->shouldBe($result);
     }
 }

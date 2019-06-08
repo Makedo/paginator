@@ -14,8 +14,14 @@ class CallableLoader implements Loader
         $this->loader = $loader;
     }
 
-    public function load(int $limit, int $offset): iterable
+    public function load(int $limit, int $offset): Result
     {
-        return call_user_func($this->loader, $limit, $offset);
+        $result = call_user_func($this->loader, $limit, $offset);
+
+        if ($result instanceof Result) {
+            return $result;
+        }
+
+        return Result::fromIterable($result);
     }
 }
