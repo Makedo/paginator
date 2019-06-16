@@ -41,6 +41,6 @@ class ByOffsetSpec extends ObjectBehavior
         $perPage = 2;
         $this->beConstructedWith($perPage, $currentPage);
 
-        $this->countSkip()->shouldBe(18);
+        $this->countSkip()->shouldBe(($currentPage - 1) * $perPage);
     }
 }
