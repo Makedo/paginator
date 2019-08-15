@@ -1,0 +1,18 @@
+{
+  "require-dev": {
+    "phpspec/phpspec": "^5.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Makedo\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "spec\\Makedo\\": "spec"
+    }
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
+}
