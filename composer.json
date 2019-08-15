@@ -1,4 +1,16 @@
 {
+  "name": "makedo/php-paginator",
+  "description": "Data source independent paginator for php",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oleksandr Kryvous",
+      "email": "krivousa@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1"
+  },
   "require-dev": {
     "phpspec/phpspec": "^5.1"
   },
