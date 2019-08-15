@@ -71,6 +71,7 @@ class PaginatorBuilder
 
     public function build(int $currentPage, Loader $loader, ?Counter $counter = null): Paginator
     {
+        $currentPage  = $this->filterCurrentPage($currentPage);
         $skipStrategy = $this->createSkipStrategy($currentPage);
 
         $paginator = new Paginator();
@@ -106,5 +107,14 @@ class PaginatorBuilder
         }
         
         throw new RuntimeException('Invalid skip strategy.');
+    }
+
+    private function filterCurrentPage(int $currentPage): int
+    {
+        if ($currentPage <= 0) {
+            return 1;
+        }
+
+        return $currentPage;
     }
 }
