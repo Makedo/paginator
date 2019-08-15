@@ -5,7 +5,7 @@ namespace spec\Makedo\Paginator\Counter;
 use Makedo\Paginator\Counter\CallableCounter;
 use Makedo\Paginator\Counter\Counter;
 use PhpSpec\ObjectBehavior;
-use Test\Makedo\CallableMock;
+use spec\Makedo\Paginator\CallableMock;
 
 class CallableCounterSpec extends ObjectBehavior
 {

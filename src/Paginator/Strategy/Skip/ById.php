@@ -12,6 +12,10 @@ class ById implements Skip
 
     public function __construct(?int $id)
     {
+        if ($id < 0) {
+            $id = 0;
+        }
+
         $this->id = $id;
     }
 

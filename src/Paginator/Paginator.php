@@ -2,28 +2,34 @@
 
 namespace Makedo\Paginator;
 
-use Makedo\Paginator\Loader\Loader;
+use Makedo\Paginator\Page\Builder\Pipe;
+use Makedo\Paginator\Page\Page;
 
 class Paginator
 {
-    public function paginate(
-        int $currentPage,
-        int $perPage,
-        Loader $loader
-    ): Page
+    /**
+     * @var Pipe[]
+     */
+    private $pipeline = [];
+
+    public function __construct(Pipe ...$pipeline)
+    {
+        $this->pipeline = $pipeline;
+    }
+
+    public function addPipe(Pipe $pipe): Paginator
+    {
+        array_push($this->pipeline, $pipe);
+        return $this;
+    }
+
+    public function paginate(): Page
     {
         $page = new Page();
 
-        $page->currentPage = $currentPage;
-        $page->perPage = $perPage;
-
-        $offset = ($currentPage - 1) * $perPage;
-        $items = $loader->load($perPage + 1, $offset);
-
-        $page->hasPrev = $currentPage > 1;
-        $page->hasNext = count($items) > $perPage;
-
-        $page->items = new \LimitIterator($items->getIterator(), 0, $perPage);
+        foreach ($this->pipeline as $pipe) {
+            $page = $pipe->build($page);
+        }
 
         return $page;
     }

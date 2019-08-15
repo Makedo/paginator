@@ -1,5 +1,6 @@
 <?php
-namespace Test\Makedo;
+
+namespace spec\Makedo\Paginator;
 
 class CallableMock
 {

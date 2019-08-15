@@ -5,7 +5,6 @@ namespace spec\Makedo\Paginator\Strategy\Limit;
 use Makedo\Paginator\Strategy\Limit\Limit;
 use Makedo\Paginator\Strategy\Limit\PerPagePlusOne;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class PerPagePlusOneSpec extends ObjectBehavior
 {

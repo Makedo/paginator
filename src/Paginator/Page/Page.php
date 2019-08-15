@@ -1,10 +1,14 @@
 <?php
 
-namespace Makedo\Paginator;
+namespace Makedo\Paginator\Page;
+
+use Makedo\Paginator\Loader\Result;
 
 class Page
 {
-    /** @var int */
+    /**
+     * @var int
+     */
     public $currentPage;
 
     /**
@@ -13,7 +17,7 @@ class Page
     public $perPage;
 
     /**
-     * @var iterable
+     * @var Result
      */
     public $items;
 
@@ -26,4 +30,14 @@ class Page
      * @var bool
      */
     public $hasNext;
+
+    /**
+     * @var ?int
+     */
+    public $total;
+
+    /**
+     * @var ?int
+     */
+    public $totalPages;
 }
