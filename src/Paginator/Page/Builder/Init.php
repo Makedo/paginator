@@ -16,7 +16,7 @@ class Init implements Pipe
      */
     private $currentPage;
 
-    public function __construct(int $perPage, int $currentPage)
+    public function __construct(int $perPage, ?int $currentPage)
     {
         $this->perPage = $perPage;
         $this->currentPage = $currentPage;

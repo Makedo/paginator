@@ -3,16 +3,16 @@
 namespace spec\Makedo\Paginator\Page\Builder;
 
 use Makedo\Paginator\Loader\Result;
-use Makedo\Paginator\Page\Builder\HasNextByItems;
+use Makedo\Paginator\Page\Builder\HasNextByItemsCount;
 use Makedo\Paginator\Page\Builder\Pipe;
 use Makedo\Paginator\Page\Page;
 use PhpSpec\ObjectBehavior;
 
-class HasNextByItemsSpec extends ObjectBehavior
+class HasNextByItemsCountSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(HasNextByItems::class);
+        $this->shouldHaveType(HasNextByItemsCount::class);
         $this->shouldImplement(Pipe::class);
     }
 

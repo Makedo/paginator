@@ -7,7 +7,7 @@ use Makedo\Paginator\Loader\Loader;
 
 use Makedo\Paginator\Page\Builder\Init;
 use Makedo\Paginator\Page\Builder\LoadItems;
-use Makedo\Paginator\Page\Builder\HasNextByItems;
+use Makedo\Paginator\Page\Builder\HasNextByItemsCount;
 use Makedo\Paginator\Page\Builder\HasNextByPages;
 use Makedo\Paginator\Page\Builder\CountTotal;
 
@@ -28,12 +28,17 @@ class PaginatorBuilder
     /**
      * @var int
      */
-    private $perPage;
+    private $perPage = self::DEFAULT_PER_PAGE;
 
     /**
-     * @var Skip
+     * @var string
      */
     private $skipStrategy = self::SKIP_BY_OFFSET;
+
+    /**
+     * @var ?int
+     */
+    private $currentPage;
 
     /**
      * @var ?int
@@ -55,6 +60,16 @@ class PaginatorBuilder
         return $this;
     }
 
+    public function currentPage(int $currentPage): self
+    {
+        if ($currentPage <= 0) {
+            $currentPage = 1;
+        }
+
+        $this->currentPage = $currentPage;
+        return $this;
+    }
+
     public function skipById(?int $id): self
     {
         $this->skipStrategy = self::SKIP_BY_ID;
@@ -63,58 +78,50 @@ class PaginatorBuilder
         return $this;
     }
     
-    public function skipByOffset(): self
+    public function skipByOffset(int $currentPage): self
     {
         $this->skipStrategy = self::SKIP_BY_OFFSET;
+        $this->currentPage($currentPage);
+
         return $this;
     }
 
-    public function build(int $currentPage, Loader $loader, ?Counter $counter = null): Paginator
+    public function build(Loader $loader, ?Counter $counter = null): Paginator
     {
-        $currentPage  = $this->filterCurrentPage($currentPage);
-        $skipStrategy = $this->createSkipStrategy($currentPage);
+        $skipStrategy  = $this->createSkipStrategy();
 
-        $paginator = new Paginator();
-
-        if ($counter) {
+        if ($counter && $this->currentPage) {
             $limitStrategy = new PerPage($this->perPage);
-            $paginator
-                ->addPipe(new Init($this->perPage, $currentPage))
-                ->addPipe(new LoadItems($loader, $limitStrategy, $skipStrategy))
-                ->addPipe(new CountTotal($counter))
-                ->addPipe(new HasNextByPages())
-            ;
+            $next = new HasNextByPages();
         } else {
             $limitStrategy = new PerPagePlusOne($this->perPage);
-            $paginator
-                ->addPipe(new Init($this->perPage, $currentPage))
-                ->addPipe(new LoadItems($loader, $limitStrategy, $skipStrategy))
-                ->addPipe(new HasNextByItems())
-            ;
+            $next = new HasNextByItemsCount();
         }
+
+        $paginator = new Paginator();
+        $paginator
+            ->addPipe(new Init($this->perPage, $this->currentPage))
+            ->addPipe(new LoadItems($loader, $limitStrategy, $skipStrategy));
+
+        if ($counter) {
+            $paginator->addPipe(new CountTotal($counter));
+        }
+
+        $paginator->addPipe($next);
 
         return $paginator;
     }
     
-    private function createSkipStrategy(int $currentPage): Skip
+    protected function createSkipStrategy(): Skip
     {
         switch ($this->skipStrategy) {
             case self::SKIP_BY_ID:
                 return new ById($this->id);
                 
             case self::SKIP_BY_OFFSET:
-                return new ByOffset($this->perPage, $currentPage);
+                return new ByOffset($this->perPage, $this->currentPage);
         }
         
         throw new RuntimeException('Invalid skip strategy.');
-    }
-
-    private function filterCurrentPage(int $currentPage): int
-    {
-        if ($currentPage <= 0) {
-            return 1;
-        }
-
-        return $currentPage;
     }
 }
