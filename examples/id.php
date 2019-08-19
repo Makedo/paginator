@@ -32,6 +32,7 @@ var_dump($page->currentPage);
 var_dump($page->hasNext);
 var_dump($page->hasPrev);
 var_dump($page->items->count());
+var_dump($page->itemsCount);
 foreach ($page->items as $user) {
     var_dump($user);
 }

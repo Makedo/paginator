@@ -14,16 +14,22 @@ final class Result implements IteratorAggregate, Countable
     /**
      * @var Iterator
      */
-    private $iterator;
+    private $items;
+
+    /**
+     * @var int|null
+     */
+    private $limit;
 
     /**
      * @var int
      */
     private $count;
 
-    public function __construct(Iterator $items, ?int $count = null, ?int $limit = null)
+    public function __construct(Iterator $items, ?int $limit = null, ?int $count = null)
     {
-        $this->iterator = $limit ? new LimitIterator($items, 0, $limit) : $items;
+        $this->items = $items;
+        $this->limit = $limit;
         $this->count = $count;
     }
 
@@ -42,26 +48,28 @@ final class Result implements IteratorAggregate, Countable
 
     public static function fromArray(array $items, ?int $limit = null): self
     {
-        return new self(
-            new ArrayIterator($items),
-            count($items),
-            $limit
-        );
+        return new self(new ArrayIterator($items), $limit);
     }
 
     public static function fromIterator(Iterator $items, ?int $limit = null): self
     {
-        $count = self::countItems($items);
-        return new self($items, $count, $limit);
+        return new self($items, $limit);
     }
 
     public function getIterator(): Iterator
     {
-        return $this->iterator;
+        return $this->limit
+            ? new LimitIterator($this->items, 0, $this->limit)
+            : $this->items
+         ;
     }
 
     public function count(): int
     {
+        if (null === $this->count) {
+            $this->count = self::countItems($this->items);
+        }
+
         return $this->count;
     }
 

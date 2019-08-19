@@ -46,6 +46,8 @@ class PaginatorBuilderSpec extends ObjectBehavior
         $page->currentPage->shouldBe($currentPage);
         $page->perPage->shouldBe(self::PER_PAGE);
         $page->items->shouldBe($result);
+        $page->itemsCount->shouldBe(self::PER_PAGE);
+        $page->items->count()->shouldBe($result->count());
         $page->hasPrev->shouldBe(true);
         $page->hasNext->shouldBe(true);
     }
@@ -105,6 +107,8 @@ class PaginatorBuilderSpec extends ObjectBehavior
         $page->currentPage->shouldBe($currentPage);
         $page->perPage->shouldBe(self::PER_PAGE);
         $page->items->shouldBe($result);
+        $page->itemsCount->shouldBe(self::PER_PAGE);
+        $page->items->count()->shouldBe($result->count());
         $page->hasPrev->shouldBe(true);
         $page->hasNext->shouldBe(true);
 
@@ -140,6 +144,8 @@ class PaginatorBuilderSpec extends ObjectBehavior
 
         $page->currentPage->shouldBe(null);
         $page->perPage->shouldBe(self::PER_PAGE);
+        $page->itemsCount->shouldBe(self::PER_PAGE);
+        $page->items->count()->shouldBe($result->count());
         $page->items->shouldBe($result);
         $page->hasPrev->shouldBe(true);
         $page->hasNext->shouldBe(true);
@@ -156,7 +162,7 @@ class PaginatorBuilderSpec extends ObjectBehavior
         $id = 55;
         $limit = self::PER_PAGE;
 
-        $result = Result::fromArray([1,2,3,4], self::PER_PAGE);
+        $result = Result::fromArray([1,2,3,4,5], self::PER_PAGE);
         $loader->load($limit, $id)
             ->willReturn($result)
             ->shouldBeCalled()
@@ -179,6 +185,8 @@ class PaginatorBuilderSpec extends ObjectBehavior
         $page->currentPage->shouldBe($currentPage);
         $page->perPage->shouldBe(self::PER_PAGE);
         $page->items->shouldBe($result);
+        $page->itemsCount->shouldBe(self::PER_PAGE);
+        $page->items->count()->shouldBe($result->count());
         $page->hasPrev->shouldBe(true);
         $page->hasNext->shouldBe(true);
 

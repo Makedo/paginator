@@ -39,8 +39,6 @@ class LoadItems implements Pipe
 
         $items = $this->loader->load($limit, $skip);
 
-        $page->hasPrev = $this->skipStrategy->hasSkip();
-
         $page->items = $items instanceof Result
             ? $items
             : Result::fromIterable($items, $page->perPage)

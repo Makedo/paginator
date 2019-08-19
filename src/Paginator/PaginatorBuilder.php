@@ -5,6 +5,8 @@ namespace Makedo\Paginator;
 use Makedo\Paginator\Counter\Counter;
 use Makedo\Paginator\Loader\Loader;
 
+use Makedo\Paginator\Page\Builder\CountItems;
+use Makedo\Paginator\Page\Builder\HasPrev;
 use Makedo\Paginator\Page\Builder\Init;
 use Makedo\Paginator\Page\Builder\LoadItems;
 use Makedo\Paginator\Page\Builder\HasNextByItemsCount;
@@ -101,12 +103,13 @@ class PaginatorBuilder
         $paginator = new Paginator();
         $paginator
             ->addPipe(new Init($this->perPage, $this->currentPage))
-            ->addPipe(new LoadItems($loader, $limitStrategy, $skipStrategy));
-
+            ->addPipe(new HasPrev($skipStrategy))
+            ->addPipe(new LoadItems($loader, $limitStrategy, $skipStrategy))
+            ->addPipe(new CountItems())
+        ;
         if ($counter) {
             $paginator->addPipe(new CountTotal($counter));
         }
-
         $paginator->addPipe($next);
 
         return $paginator;
