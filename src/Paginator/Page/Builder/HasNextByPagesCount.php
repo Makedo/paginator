@@ -5,7 +5,7 @@ namespace Makedo\Paginator\Page\Builder;
 
 use Makedo\Paginator\Page\Page;
 
-class HasNextByPages implements Pipe
+class HasNextByPagesCount implements Pipe
 {
     public function build(Page $page): Page
     {
