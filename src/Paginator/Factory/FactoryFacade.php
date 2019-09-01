@@ -9,12 +9,12 @@ class FactoryFacade
         return new SkipById($perPage);
     }
 
-    public function createSkipByIdWithCount(int $perPage): SkipByIdCountable
+    public function createSkipByIdCountable(int $perPage): SkipByIdCountable
     {
         return new SkipByIdCountable($perPage);
     }
 
-    public function createSkipByIdWithCountAndCurrentPage(
+    public function createSkipByIdCountableWithCurrentPage(
         int $perPage
     ): SkipByIdCountableWithCurrentPage
     {
@@ -26,7 +26,7 @@ class FactoryFacade
         return new SkipByOffset($perPage);
     }
 
-    public function createSkipByOffsetWithCount(
+    public function createSkipByOffsetCountable(
         int $perPage
     ): SkipByOffsetCountable
     {
