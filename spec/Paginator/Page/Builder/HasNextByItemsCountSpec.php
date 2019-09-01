@@ -7,6 +7,7 @@ use Makedo\Paginator\Page\Builder\HasNextByItemsCount;
 use Makedo\Paginator\Page\Builder\Pipe;
 use Makedo\Paginator\Page\Page;
 use PhpSpec\ObjectBehavior;
+use PhpSpec\Wrapper\Subject;
 
 class HasNextByItemsCountSpec extends ObjectBehavior
 {
@@ -18,6 +19,7 @@ class HasNextByItemsCountSpec extends ObjectBehavior
 
     function it_fills_page_with_has_next_value_true(Page $page)
     {
+        /** @var Page|Subject $page */
         $page = $page->getWrappedObject();
         $page->items = Result::fromArray([1,2,3]);
         $page->perPage = 2;
@@ -29,6 +31,7 @@ class HasNextByItemsCountSpec extends ObjectBehavior
 
     function it_fills_page_with_has_next_value_false(Page $page)
     {
+        /** @var Page|Subject $page */
         $page = $page->getWrappedObject();
         $page->items = Result::fromArray([1,2,3]);
         $page->perPage = 4;

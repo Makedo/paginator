@@ -7,6 +7,7 @@ use Makedo\Paginator\Page\Builder\Pipe;
 use Makedo\Paginator\Page\Page;
 use Makedo\Paginator\Strategy\Skip\Skip;
 use PhpSpec\ObjectBehavior;
+use PhpSpec\Wrapper\Subject;
 
 class HasPrevSpec extends ObjectBehavior
 {
@@ -25,6 +26,7 @@ class HasPrevSpec extends ObjectBehavior
     {
         $skip->hasSkip()->willReturn(true);
 
+        /** @var Page|Subject $page */
         $page = $page->getWrappedObject();
 
         $page = $this->build($page);
