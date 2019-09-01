@@ -10,7 +10,7 @@ $loader = function (int $limit, int $skip) use ($pdo): iterable
 {
     $stmt = $pdo->prepare('SELECT * FROM users LIMIT :limit OFFSET :offset');
     $stmt->execute(['limit' => $limit, 'offset' => $skip]);
-    return $stmt->fetchAll();
+    return $stmt->fetch(\PDO::FETCH_NUM);
 };
 
 $perPage = 100;

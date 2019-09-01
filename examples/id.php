@@ -11,7 +11,7 @@ $loader = function (int $limit, int $skip) use ($pdo): iterable
 {
     $stmt = $pdo->prepare('SELECT * FROM users where id > :skip LIMIT :limit');
     $stmt->execute(['limit' => $limit, 'skip' => $skip]);
-    return $stmt->fetchAll();
+    return $stmt->fetch(\PDO::FETCH_NUM);
 };
 
 $perPage = 100;
