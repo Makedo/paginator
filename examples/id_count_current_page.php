@@ -1,5 +1,6 @@
 <?php
 
+use Makedo\Paginator\Counter\CallableCounter;
 use Makedo\Paginator\Factory\FactoryFacade;
 use Makedo\Paginator\Loader\CallableLoader;
 
@@ -14,12 +15,25 @@ $loader = function (int $limit, int $skip) use ($pdo): iterable
     return $stmt->fetchAll();
 };
 
+$counter = function () use ($pdo): int { //this function should return integer value of total count of items.
+    $stmt = $pdo->prepare('SELECT count(id) FROM users');
+    return $stmt->fetch();
+};
+
+
 $perPage = 100;
 $lastIdOnPreviousPage = 34;
+$currentPage = 5;
 $factoryFacade = new FactoryFacade();
+
 $page = $factoryFacade
-    ->createSkipById($perPage)
-    ->createPaginator(new CallableLoader($loader), $lastIdOnPreviousPage)
+    ->createSkipByIdCountableWithCurrentPage($perPage)
+    ->createPaginator(
+        new CallableLoader($loader),
+        new CallableCounter($counter),
+        $lastIdOnPreviousPage,
+        $currentPage
+    )
     ->paginate()
 ;
 

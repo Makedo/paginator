@@ -1,32 +1,34 @@
 <?php
 
 use Makedo\Paginator\Counter\CallableCounter;
+use Makedo\Paginator\Factory\SkipByIdCountableWithCurrentPage;
 use Makedo\Paginator\Loader\CallableLoader;
-use Makedo\Paginator\PaginatorBuilder;
-
 class UsersController
 {
     private $usersRepo;
 
     /**
-     * @var PaginatorBuilder
+     * @var SkipByIdCountableWithCurrentPage
      */
-    private $paginatorBuilder;
+    private $paginatorFactory;
 
-    public function __construct($usersRepo, PaginatorBuilder $paginatorBuilder)
+    private $view;
+
+    public function __construct($usersRepo, SkipByIdCountableWithCurrentPage $paginatorFactory, $view)
     {
         $this->usersRepo = $usersRepo;
-        $this->paginatorBuilder = $paginatorBuilder;
+        $this->paginatorFactory = $paginatorFactory;
+        $this->view = $view;
     }
 
     /**
      * @param array $filters
      * @param int   $currentPage
-     * @param int   $lastIdOnPreviousPage  for 1st page its 0 or just empty
+     * @param int   $lastIdOnPreviousPage  for 1st page should be 0
      *
      * @return string
      */
-    public function fetchUsersAction(array $filters, int $currentPage, int $lastIdOnPreviousPage)
+    public function fetchUsersAction(array $filters, int $currentPage, ?int $lastIdOnPreviousPage = 0)
     {
         $loader = new CallableLoader(function (int $limit, int $skip) use ($filters) {
             return $this->usersRepo->fetchUsers($filters, $limit, $skip);
@@ -36,16 +38,16 @@ class UsersController
             return $this->usersRepo->count($filters);
         });
 
-        $paginator = $this->paginatorBuilder
-            ->skipById($lastIdOnPreviousPage)
-            ->currentPage($currentPage)
-            ->build($loader, $counter)
-        ;
+        $paginator = $this->paginatorFactory->createPaginator(
+            $loader, $counter, $lastIdOnPreviousPage, $currentPage
+        );
 
         $page = $paginator->paginate();
 
         if (0 === $page->items->count()) {
             return 'Empty Page';
         }
+
+        return $this->view->render('users.phtml', [$page]);
     }
 }
