@@ -6,20 +6,27 @@ use Makedo\Paginator\Loader\CallableLoader;
 
 require "../vendor/autoload.php";
 
-$pdo = new \PDO('mysql:host=localhost;dbname=testdb', 'name', 'password');
-
-$loader = function (int $limit, int $skip) use ($pdo): iterable
+$loader = function (int $limit, int $skip): iterable
 {
-    $stmt = $pdo->prepare('SELECT * FROM users where id > :skip LIMIT :limit');
-    $stmt->execute(['limit' => $limit, 'skip' => $skip]);
-    return $stmt->fetch(\PDO::FETCH_NUM);
+    //    Here is and example of query. For making it work - just return an array
+
+    //    $pdo = new \PDO('mysql:host=localhost;dbname=testdb', 'name', 'password');
+    //    $stmt = $pdo->prepare('SELECT * FROM users where id > :skip LIMIT :limit');
+    //    $stmt->execute(['limit' => $limit, 'skip' => $skip]);
+    //    return $stmt->fetch(\PDO::FETCH_NUM);
+
+    return [['id' => 35, 'name' => 'John Doe'], ['id' => 36, 'name' => 'Jan Kowalski']];
 };
 
-$counter = function () use ($pdo): int { //this function should return integer value of total count of items.
-    $stmt = $pdo->prepare('SELECT count(id) FROM users');
-    return $stmt->fetch();
-};
+$counter = function (): int { //this function should return integer value of total count of items.
+    //    Here is and example of query. For making it work - just return an integer value
 
+    //    $pdo = new \PDO('mysql:host=localhost;dbname=testdb', 'name', 'password');
+    //    $stmt = $pdo->prepare('SELECT count(id) FROM users');
+    //    return $stmt->fetch();
+
+    return 400;
+};
 
 $perPage = 100;
 $lastIdOnPreviousPage = 34;
