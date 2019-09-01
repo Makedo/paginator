@@ -23,10 +23,11 @@ Main idea of this package is to build data source independent paginator, which h
     In this example you have an ability use `id` as skip value. 
     As you can see, Loader function accepts `id` in `$skip` variable. 
     It should be `id` of last item on previous page and it comes from client side.
-    For 1st page it should be 0. 
-    It will use same logic for `$page->hasNext`, because it has no Counter param.
+    For 1st page it should be 0.
+    For `$page->hasNext` paginator will load `$perPage + 1` item,
+    and then check if actual count of loaded items is more than `$perPage`.
   
-    Optionally, you can set `$currentPage` value, wich will be set to `$page->currentPage`.
+    Optionally, you can set `$currentPage` value, which will be set to `$page->currentPage`.
   
 - Count skip by id with total count
   ```php
