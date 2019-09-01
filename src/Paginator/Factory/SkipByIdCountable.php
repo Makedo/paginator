@@ -25,7 +25,6 @@ class SkipByIdCountable extends AbstractFactory
     ): Paginator
     {
         $limitStrategy = new PerPagePlusOne($this->perPage);
-        $hasNext = new HasNextByItemsCount();
         $skipStrategy  = new ById($id);
 
         $paginator = new Paginator();
@@ -35,7 +34,7 @@ class SkipByIdCountable extends AbstractFactory
             ->addPipe(new LoadItems($loader, $limitStrategy, $skipStrategy))
             ->addPipe(new CountItems())
             ->addPipe(new CountTotal($counter))
-            ->addPipe($hasNext)
+            ->addPipe(new HasNextByItemsCount())
         ;
 
         return $paginator;

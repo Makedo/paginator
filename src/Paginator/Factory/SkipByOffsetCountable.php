@@ -6,7 +6,7 @@ use Makedo\Paginator\Counter\Counter;
 use Makedo\Paginator\Loader\Loader;
 use Makedo\Paginator\Page\Builder\CountItems;
 use Makedo\Paginator\Page\Builder\CountTotal;
-use Makedo\Paginator\Page\Builder\HasNextByPages;
+use Makedo\Paginator\Page\Builder\HasNextByPagesCount;
 use Makedo\Paginator\Page\Builder\HasPrev;
 use Makedo\Paginator\Page\Builder\Init;
 use Makedo\Paginator\Page\Builder\LoadItems;
@@ -30,7 +30,7 @@ class SkipByOffsetCountable extends AbstractFactory
             ->addPipe(new LoadItems($loader, $limitStrategy, $skipStrategy))
             ->addPipe(new CountItems())
             ->addPipe(new CountTotal($counter))
-            ->addPipe(new HasNextByPages())
+            ->addPipe(new HasNextByPagesCount())
         ;
 
         return $paginator;
