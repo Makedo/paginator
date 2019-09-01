@@ -61,7 +61,7 @@ final class Result implements IteratorAggregate, Countable
         return $this->limit
             ? new LimitIterator($this->items, 0, $this->limit)
             : $this->items
-         ;
+        ;
     }
 
     public function count(): int

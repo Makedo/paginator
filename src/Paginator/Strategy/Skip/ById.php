@@ -6,11 +6,11 @@ namespace Makedo\Paginator\Strategy\Skip;
 class ById implements Skip
 {
     /**
-     * @var int|null
+     * @var int
      */
     private $id;
 
-    public function __construct(?int $id)
+    public function __construct(int $id)
     {
         if ($id < 0) {
             $id = 0;

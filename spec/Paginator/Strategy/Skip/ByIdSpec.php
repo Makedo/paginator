@@ -22,13 +22,6 @@ class ByIdSpec extends ObjectBehavior
         $this->hasSkip()->shouldBe(true);
     }
 
-    function it_has_no_skip_when_id_is_null()
-    {
-        $this->beConstructedWith(null);
-        $this->hasSkip()->shouldBe(false);
-        $this->countSkip()->shouldBe(0);
-    }
-
     function it_has_no_skip_when_id_is_zero()
     {
         $this->beConstructedWith(0);
