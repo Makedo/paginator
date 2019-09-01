@@ -42,12 +42,6 @@ class LoadItemsSpec extends ObjectBehavior
             ->shouldBeCalled()
         ;
 
-        $hasSkip = false;
-        $skipStrategy->hasSkip()
-            ->willReturn($hasSkip)
-            ->shouldBeCalled()
-        ;
-
         $items = [1,2,3,4,5];
         $loader->load($limit, $skip)
             ->willReturn($items)
@@ -57,6 +51,5 @@ class LoadItemsSpec extends ObjectBehavior
         $page = $this->build($page);
 
         $page->items->shouldBeLike(Result::fromIterable($items));
-        $page->hasPrev->shouldBe($hasSkip);
     }
 }

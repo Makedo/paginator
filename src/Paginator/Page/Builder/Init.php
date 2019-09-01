@@ -12,11 +12,11 @@ class Init implements Pipe
     private $perPage;
 
     /**
-     * @var int
+     * @var ?int
      */
     private $currentPage;
 
-    public function __construct(int $perPage, int $currentPage)
+    public function __construct(int $perPage, ?int $currentPage = null)
     {
         $this->perPage = $perPage;
         $this->currentPage = $currentPage;

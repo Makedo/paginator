@@ -7,6 +7,7 @@ use Makedo\Paginator\Page\Builder\CountTotal;
 use Makedo\Paginator\Page\Builder\Pipe;
 use Makedo\Paginator\Page\Page;
 use PhpSpec\ObjectBehavior;
+use PhpSpec\Wrapper\Subject;
 
 class CountTotalSpec extends ObjectBehavior
 {
@@ -26,6 +27,7 @@ class CountTotalSpec extends ObjectBehavior
         $total = 10;
         $counter->count()->willReturn($total);
 
+        /** @var Page|Subject $page */
         $page = $page->getWrappedObject();
         $page->perPage = 6;
 

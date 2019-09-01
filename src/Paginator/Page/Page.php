@@ -22,6 +22,11 @@ class Page
     public $items;
 
     /**
+     * @var int
+     */
+    public $itemsCount;
+
+    /**
      * @var bool
      */
     public $hasPrev;

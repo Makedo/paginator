@@ -1,15 +1,17 @@
 <?php
 
+
 namespace Makedo\Paginator\Page\Builder;
 
 use Makedo\Paginator\Page\Page;
 
-class HasNextByItems implements Pipe
+class CountItems implements Pipe
 {
     public function build(Page $page): Page
     {
-        $page->hasNext = $page->items->count() > $page->perPage;
+        $count = $page->items->count();
+        $page->itemsCount = $count > $page->perPage ? $count - 1 : $count;
+
         return $page;
     }
-
 }
