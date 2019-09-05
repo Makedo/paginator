@@ -4,7 +4,7 @@ namespace Makedo\Paginator\Page;
 
 use Makedo\Paginator\Loader\Result;
 
-class Page
+class Page implements \IteratorAggregate
 {
     /**
      * @var int
@@ -45,4 +45,10 @@ class Page
      * @var ?int
      */
     public $totalPages;
+
+
+    public function getIterator()
+    {
+        return $this->items;
+    }
 }

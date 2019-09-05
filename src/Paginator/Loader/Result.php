@@ -30,13 +30,17 @@ final class Result implements IteratorAggregate, Countable
     {
         $this->items = $items;
         $this->limit = $limit;
-        $this->count = $count;
+        $this->count = $count ?? $this->countItems($items);
     }
 
     public static function fromIterable(iterable $items, ?int $limit = null): self
     {
         if (is_array($items)) {
             return self::fromArray($items, $limit);
+        }
+
+        if ($items instanceof \Generator) {
+            return self::fromGenerator($items, $limit);
         }
 
         if ($items instanceof Iterator) {
@@ -66,25 +70,38 @@ final class Result implements IteratorAggregate, Countable
 
     public function count(): int
     {
-        if (null === $this->count) {
-            $this->count = self::countItems($this->items);
-        }
-
-        return $this->count;
+        return (int) $this->count;
     }
 
-    private static function countItems(Iterator $items): int
+    private function countItems(Iterator $items): int
     {
         if ($items instanceof Countable) {
-            $count = $items->count();
-        } else {
-            $count = 0;
-            foreach ($items as $v) {
-                ++$count;
-            }
-            $items->rewind();
+            return $items->count();
         }
 
+        $count = 0;
+        foreach ($items as $item) {
+            ++$count;
+        }
+        $items->rewind();
         return $count;
+    }
+
+    private static function fromGenerator(\Generator $generator, ?int $limit = null)
+    {
+        $items = [];
+        $count = 0;
+        $limit = $limit ?? 1000;
+
+        foreach ($generator as $item) {
+            $items[] = $item;
+            ++$count;
+
+            if ($count > $limit) {
+                break;
+            }
+        }
+
+        return new self(new ArrayIterator($items), $limit, $count);
     }
 }

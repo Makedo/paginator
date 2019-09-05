@@ -63,4 +63,20 @@ class ResultSpec extends ObjectBehavior
         $this->getIterator()->shouldIterateAs([1, 2, 3, 4]);
         $this->count()->shouldBe(count($data));
     }
+
+    function it_iterates_over_generator()
+    {
+        $data = [1, 2, 3, 4, 5];
+        $generator = function () use ($data) {
+            foreach ($data as $v) {
+                yield $v;
+            }
+        };
+
+        $limit = 4;
+        $this->beConstructedThrough('fromIterable', [$generator(), $limit]);
+
+        $this->getIterator()->shouldIterateAs([1, 2, 3, 4]);
+        $this->count()->shouldBe(count($data));
+    }
 }
